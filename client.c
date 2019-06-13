@@ -24,24 +24,35 @@
  *参   数：消息结构体
  *功   能：登陆
  ****************************************/
-typedef  truct message()
-{ 
-	int num;
-	int type;
-	char name[10];
-	int password[6];
-	int age;
-	int phonenum[15];
-	char address[10];
-}mesg;
-
 void do_admin_query(int sockfd,MSG *msg)
 {
 	printf("------------%s-----------%d.\n",__func__,__LINE__);
-	printf("*************************************************************\n");
-	printf("工号  用户类型 姓名  密码  年龄 电话 地址\n");
-	printf("*************************************************************\n");
-	
+	msg->msgtype=ADMIN_QUERY;
+	printf("1：按人名查找 2：查找所有 3：退出\n");
+	printf("请输入您要选的数字\n");
+	int n;
+	scanf("%d",&n);
+	switch(n)
+	{
+		case 1:
+				printf("请输入您要查找的用户名：");
+				scanf("%s",msg->info.name);
+				msg->flags=1;
+				send(sockfd,msg,sizeof(MSG),0);
+				recv(sockfd,msg,sizeof(MSG),0);
+				printf("工号 用户类型 姓名 密码 年龄 电话 地址\n");
+				printf("%d %d %s %s %d %s %s\n",msg->info.no,msg->info.usertype,msg->info.name,msg->info.passwd,msg->info.age,msg->info.phone,msg->info.addr);
+				break;
+		case 2:
+				msg->flags=2;
+				send(sockfd,msg,sizeof(MSG),0);
+				recv(sockfd,msg,sizeof(MSG),0);
+				break;
+		default:
+				break;
+	}
+
+
 }
 
 
@@ -53,8 +64,195 @@ void do_admin_query(int sockfd,MSG *msg)
 void do_admin_modification(int sockfd,MSG *msg)//管理员修改
 {
 	printf("------------%s-----------%d.\n",__func__,__LINE__);
+	msg->msgtype=ADMIN_MODIFY;
+	printf("请输入您要修改的工号：");
+	scanf("%d",&msg->info.no);
+	printf("请输入要修改的选项\n");
+	printf("1 姓名 2 年龄 3 家庭住址 4 电话\n");
+	printf("5 职位 6 工资 7 入职年月 8 评级\n");
+	printf("9 密码 10 退出\n");
+	printf("请输入数字");
+	int n ;
+	scanf("%d",&n);
+	switch(n)
+	{
+		case 1:
+			printf("请输入姓名：");
+			scanf("%s",msg->info.addr);
+			msg->flags=1;
+			//发送更改请求
+			send(sockfd,msg,sizeof(MSG),0);
+			recv(sockfd,msg,sizeof(MSG),0);
+			printf("msg->recvmsg  :%s\n",msg->recvmsg);
 
+			if(strncmp(msg->recvmsg,"OK",2)==0)
+			{
+				printf("修改数据库成功\n");
+				printf("修改结束\n");
+			}
+			else
+			{
+				printf("修改失败\n");		
+			}
+			break;
+		case 2:
+			printf("请输入年龄：");
+			scanf("%s",msg->info.addr);
+			msg->flags=2;
+			//发送更改请求
+			send(sockfd,msg,sizeof(MSG),0);
+			recv(sockfd,msg,sizeof(MSG),0);
+			printf("msg->recvmsg  :%s\n",msg->recvmsg);
 
+			if(strncmp(msg->recvmsg,"OK",2)==0)
+			{
+				printf("修改数据库成功\n");
+				printf("修改结束\n");
+			}
+			else
+			{
+				printf("修改失败\n");		
+			}
+			break;
+		case 3:
+			printf("请输入家庭住址：");
+			scanf("%s",msg->info.addr);
+			msg->flags=3;
+			//发送更改请求
+			send(sockfd,msg,sizeof(MSG),0);
+			recv(sockfd,msg,sizeof(MSG),0);
+			printf("msg->recvmsg  :%s\n",msg->recvmsg);
+
+			if(strncmp(msg->recvmsg,"OK",2)==0)
+			{
+				printf("修改数据库成功\n");
+				printf("修改结束\n");
+			}
+			else
+			{
+				printf("修改失败\n");		
+			}
+			break;
+		case 4:
+			printf("请输入电话：");
+			scanf("%s",msg->info.addr);
+			msg->flags=4;
+			//发送更改请求
+			send(sockfd,msg,sizeof(MSG),0);
+			recv(sockfd,msg,sizeof(MSG),0);
+			printf("msg->recvmsg  :%s\n",msg->recvmsg);
+
+			if(strncmp(msg->recvmsg,"OK",2)==0)
+			{
+				printf("修改数据库成功\n");
+				printf("修改结束\n");
+			}
+			else
+			{
+				printf("修改失败\n");		
+			}
+			break;
+		case 5:
+			printf("请输入职位：");
+			scanf("%s",msg->info.addr);
+			msg->flags=5;
+			//发送更改请求
+			send(sockfd,msg,sizeof(MSG),0);
+			recv(sockfd,msg,sizeof(MSG),0);
+			printf("msg->recvmsg  :%s\n",msg->recvmsg);
+
+			if(strncmp(msg->recvmsg,"OK",2)==0)
+			{
+				printf("修改数据库成功\n");
+				printf("修改结束\n");
+			}
+			else
+			{
+				printf("修改失败\n");		
+			}
+			break;
+		case 6:
+			printf("请输入工资：");
+			scanf("%s",msg->info.addr);
+			msg->flags=6;
+			//发送更改请求
+			send(sockfd,msg,sizeof(MSG),0);
+			recv(sockfd,msg,sizeof(MSG),0);
+			printf("msg->recvmsg  :%s\n",msg->recvmsg);
+
+			if(strncmp(msg->recvmsg,"OK",2)==0)
+			{
+				printf("修改数据库成功\n");
+				printf("修改结束\n");
+			}
+			else
+			{
+				printf("修改失败\n");		
+			}
+			break;
+		case 7:
+			printf("请输入入职年月：");
+			scanf("%s",msg->info.addr);
+			msg->flags=7;
+			//发送更改请求
+			send(sockfd,msg,sizeof(MSG),0);
+			recv(sockfd,msg,sizeof(MSG),0);
+			printf("msg->recvmsg  :%s\n",msg->recvmsg);
+
+			if(strncmp(msg->recvmsg,"OK",2)==0)
+			{
+				printf("修改数据库成功\n");
+				printf("修改结束\n");
+			}
+			else
+			{
+				printf("修改失败\n");		
+			}
+			break;
+		case 8:
+			printf("请输入评级：");
+			scanf("%s",msg->info.addr);
+			msg->flags=8;
+			//发送更改请求
+			send(sockfd,msg,sizeof(MSG),0);
+			recv(sockfd,msg,sizeof(MSG),0);
+			printf("msg->recvmsg  :%s\n",msg->recvmsg);
+
+			if(strncmp(msg->recvmsg,"OK",2)==0)
+			{
+				printf("修改数据库成功\n");
+				printf("修改结束\n");
+			}
+			else
+			{
+				printf("修改失败\n");		
+			}
+			break;
+		case 9:
+			printf("请输入密码：");
+			scanf("%s",msg->info.addr);
+			msg->flags=9;
+			//发送更改请求
+			send(sockfd,msg,sizeof(MSG),0);
+			recv(sockfd,msg,sizeof(MSG),0);
+			printf("msg->recvmsg  :%s\n",msg->recvmsg);
+
+			if(strncmp(msg->recvmsg,"OK",2)==0)
+			{
+				printf("修改数据库成功\n");
+				printf("修改结束\n");
+			}
+			else
+			{
+				printf("修改失败\n");		
+			}
+			break;
+		case 10:
+			close(sockfd);
+			exit(0);
+		default:
+			break;
+	}
 }
 
 
@@ -154,7 +352,11 @@ void admin_menu(int sockfd,MSG *msg)
 void do_user_query(int sockfd,MSG *msg)
 {
 	printf("------------%s-----------%d.\n",__func__,__LINE__);
-
+	msg->msgtype=USER_QUERY;
+	send(sockfd,msg,sizeof(MSG),0);
+	recv(sockfd,msg,sizeof(MSG),0);
+	printf("工号 用户类型 姓名 密码 年龄 电话 地址\n");
+	printf("%d %d %s %s %d %s %s\n",msg->info.no,msg->info.usertype,msg->info.name,msg->info.passwd,msg->info.age,msg->info.phone,msg->info.addr);
 }
 
 
@@ -167,6 +369,80 @@ void do_user_query(int sockfd,MSG *msg)
 void do_user_modification(int sockfd,MSG *msg)
 {
 	printf("------------%s-----------%d.\n",__func__,__LINE__);
+	msg->msgtype=USER_MODIFY;
+	printf("请输入您要修改的工号：");
+	scanf("%d",&msg->info.no);
+	printf("请输入要修改的选项\n");
+	printf("1 家庭住址 2 电话 3 密码 4 退出\n");
+	printf("请输入数字");
+	int n ;
+	scanf("%d",&n);
+	switch(n)
+	{
+		case 1:
+			printf("请输入家庭住址：");
+			scanf("%s",msg->info.addr);
+			msg->flags=1;
+			//发送更改请求
+			send(sockfd,msg,sizeof(MSG),0);
+			recv(sockfd,msg,sizeof(MSG),0);
+			printf("msg->recvmsg  :%s\n",msg->recvmsg);
+
+			if(strncmp(msg->recvmsg,"OK",2)==0)
+			{
+				printf("修改数据库成功\n");
+				printf("修改结束\n");
+			}
+			else
+			{
+				printf("修改失败\n");		
+			}
+		
+		case 2:
+			printf("请输入电话：");
+			scanf("%s",msg->info.phone);
+			msg->flags=2;
+			//发送更改请求
+			send(sockfd,msg,sizeof(MSG),0);
+			recv(sockfd,msg,sizeof(MSG),0);
+			printf("msg->recvmsg  :%s\n",msg->recvmsg);
+
+			if(strncmp(msg->recvmsg,"OK",2)==0)
+			{
+				printf("修改数据库成功\n");
+				printf("修改结束\n");
+			}
+			else
+			{
+				printf("修改失败\n");		
+			}
+		case 3:
+			printf("请输入密码：");
+			scanf("%s",msg->info.passwd);
+			msg->flags=3;
+			//发送更改请求
+			send(sockfd,msg,sizeof(MSG),0);
+			recv(sockfd,msg,sizeof(MSG),0);
+			printf("msg->recvmsg  :%s\n",msg->recvmsg);
+
+			if(strncmp(msg->recvmsg,"OK",2)==0)
+			{
+				printf("修改数据库成功\n");
+				printf("修改结束\n");
+			}
+			else
+			{
+				printf("修改失败\n");		
+			}
+		case 4:
+			close(sockfd);
+			exit(0);
+		
+		default:
+			printf("您输入有误\n");
+			break;
+	}
+	
 
 }
 
@@ -327,10 +603,10 @@ int main(int argc, const char *argv[])
 	memset(&serveraddr,0,sizeof(serveraddr));
 	memset(&clientaddr,0,sizeof(clientaddr));
 	serveraddr.sin_family = AF_INET;
-	serveraddr.sin_port   = htons(atoi(argv[2]));
-	serveraddr.sin_addr.s_addr = inet_addr(argv[1]);
-//	serveraddr.sin_port   = htons(5001);
-//	serveraddr.sin_addr.s_addr = inet_addr("192.168.1.200");
+//	serveraddr.sin_port   = htons(atoi(argv[2]));
+//	serveraddr.sin_addr.s_addr = inet_addr(argv[1]);
+	serveraddr.sin_port   = htons(5001);
+	serveraddr.sin_addr.s_addr = inet_addr("192.168.1.127");
 
 	if(connect(sockfd,(const struct sockaddr *)&serveraddr,addrlen) == -1){
 		perror("connect failed.\n");
